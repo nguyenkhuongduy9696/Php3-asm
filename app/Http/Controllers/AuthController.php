@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function Login(Request $request)
     {
         if(Auth::check()){
-            return redirect()->route('backend.admin');
+            return redirect()->route('frontend.homepage');
         }
         $dataview = ['errs' => []];
         if ($request->isMethod('post')) {

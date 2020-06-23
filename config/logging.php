@@ -35,6 +35,10 @@ return [
     */
 
     'channels' => [
+        'custom' => [
+            'driver' => 'custom',
+            'via' => App\Logging\CreateCustomLogger::class,
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

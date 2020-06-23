@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //-----------Route phần frontend----------------------
+Route::get('log','frontend\HomepageController@log');
 Route::get('/', 'frontend\HomepageController@index')->name('frontend.homepage');
 Route::get('shop', 'frontend\ShopController@index');
 Route::get('cart', 'frontend\CartController@index');
@@ -34,6 +35,7 @@ Route::post('saveUser', 'backend\UserController@saveUser');
 Route::middleware(['auth'])->group(function () {
     Route::get('checkout', 'frontend\CheckoutController@index');
     Route::post('order','frontend\CheckoutController@order');
+    Route::post('saveComment','frontend\ProductController@saveComment');
 });
 //------------Phân quyền động bằng database
 Route::get('admin', 'backend\AdminController@index')->name('backend.admin')->middleware('can:backend.admin');
@@ -65,3 +67,5 @@ Route::get('admin/order/done/{id}', 'backend\OrderController@done')->name('backe
 //Route cho phần Backend Comment
 Route::get('admin/comment/product/{id}', 'backend\CommentController@index')->name('backend.list-comment')->where(['id' => '[0-9]{1,6}'])->middleware('can:backend.list-comment');
 Route::get('admin/comment/product/{product}/remove/{id}', 'backend\CommentController@remove')->name('backend.remove-comment')->where(['id' => '[0-9]{1,6}','product'=>'[0-9]{1,6}'])->middleware('can:backend.remove-comment');
+//Route cho phần Search backend
+Route::match(['get','post'],'admin/search','backend\AdminController@search')->name('backend.search')->middleware('can:backend.search');

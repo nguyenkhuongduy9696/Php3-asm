@@ -68,7 +68,7 @@ class CheckoutController extends Controller{
             DB::table('order_detail')->insert($data);
 
             session()->forget('cart');
-            return redirect()->route('frontend.homepage')->with(['msg'=>'Đặt mua hàng thành công!']);
+            return redirect()->route('frontend.homepage')->with(['msg'=>'Đăng bình luận thành công!']);
         }
     }
     

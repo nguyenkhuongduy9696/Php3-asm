@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers\backend;
 
+use App\Model\Comment;
+
 class CommentController extends Controller
 {
     public function index($id)
     {
-        return view('backend.comment.list-comment',['id'=>$id]);
+        $dataview=[];
+        $dataview['pro_id']=$id;
+        $dataview['comments']=Comment::where('product_id',$id)->orderBy('created_at','desc')->paginate(4);
+        return view('backend.comment.list-comment',$dataview);
     }
     public function remove($product,$id){
-        header("location: " . asset('admin/comment/product/'.$product.'?msg=Xóa bình luận thành công!'));
-        die;
+        if(Comment::destroy($id)){
+            return redirect('admin/comment/product/'.$product)->with(['msg' => 'Xóa bình luận thành công!']);
+        }
+        return redirect('admin/comment/product/'.$product)->with(['msg' => 'Xóa bình luận không thành công!']);
     }
     
 }

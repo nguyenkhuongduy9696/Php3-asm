@@ -17,6 +17,11 @@
 @endsection
 @section('content')
 <div class="product-details">
+        @if(Session::get('msg'))
+		    <div class="alert alert-success">
+        	    {{ session('msg') }}
+    	    </div>
+        @endif
     <!--product-details-->
     <div class="col-sm-5">
         <div class="view-product">
@@ -65,28 +70,40 @@
         </div>
         <div class="tab-pane fade " id="reviews">
             <div class="col-sm-12">
+                @forelse($comments as $comment)
                 <div class="product-comment">
                     <ul>
-                        <li><a href=""><i class="fa fa-user"></i>admin123</a></li>
-                        <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+                        <li><a href=""><i class="fa fa-user"></i>
+                                @php
+                                $parent = $comment->getUser();
+                                @endphp
+                                @if($parent !== false)
+                                <?= $parent->username; ?>
+                                @endif
+                            </a></li>
+                        <li><a href=""><i class="fa fa-calendar-o"></i>{{$comment->created_at}}</a></li>
                     </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    <p>{{$comment->detail}}</p>
                 </div>
-                <div class="product-comment">
-                    <ul>
-                        <li><a href=""><i class="fa fa-user"></i>admin123</a></li>
-                        <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-                    </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                </div>
+                @empty
+                <p><b>Chưa có bình luận nào cho sản phẩm này</b></p>
+                @endforelse
                 <p><b>Để lại ý kiến của bạn về sản phẩm</b></p>
-
-                <form action="#">
-                    <textarea name=""></textarea>
-                    <button type="button" class="btn btn-default pull-right">
+                @if(Auth::check())
+                <form action={{asset('saveComment')}} method="post" id="comment-form">
+                    @csrf
+                    <input type="hidden" name="id" value="{{$pro->id}}">
+                    <textarea name="comment" id="comment"></textarea>
+                    @error('comment')
+						<small class="text-danger">{{ $message }}</small>
+					@enderror
+                    <button type="submit" class="btn btn-default pull-right">
                         Đăng bình luận
                     </button>
                 </form>
+                @else
+                <p>Bạn chưa đăng nhập. Vui lòng <a href={{asset('login')}}>Đăng nhập</a> để đăng bình luận</p>
+                @endif
             </div>
         </div>
 
@@ -118,4 +135,20 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+<script>
+    $('#comment-form').validate({
+			rules: {
+				comment: {
+					required: true
+				}
+			},
+			messages: {
+				comment: {
+					required: "Mời bạn nhập nội dung bình luận!"
+				}
+			}
+		})
+</script>
 @endsection

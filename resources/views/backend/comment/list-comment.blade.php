@@ -5,8 +5,13 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="panel panel-primary">
+                @if(Session::get('msg'))
+                    <div class="alert alert-success">
+                        {{ session('msg') }}
+                    </div>
+                @endif
             <div class="panel-heading">
-                <h4>Danh sách bình luận của sản phẩm có id là {{$id}}</h4>
+                <h4>Danh sách bình luận </h4>
                 <div class="options">
                 </div>
             </div>
@@ -22,27 +27,28 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($comments as $comment)
                         <tr>
-                            <td>1</td>
-                            <td>admin123</td>
-                            <td>23/2/2020</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
+                            <td>{{$comment->id}}</td>
                             <td>
-                                <a href={{asset('admin/comment/product')}}/{{$id}}/remove/1 class="btn-danger btn btn-remove">Xóa</a>    
+                                @php
+                                $parent = $comment->getUser();
+                                @endphp
+                                @if($parent !== false)
+                                <?= $parent->username; ?>
+                                @endif
+                            </td>
+                            <td>{{$comment->created_at}}</td>
+                            <td>{{$comment->detail}}</td>
+                            <td>
+                                <a href={{asset('admin/comment/product')}}/{{$pro_id}}/remove/{{$comment->id}} class="btn-danger btn btn-remove">Xóa</a>    
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>user123</td>
-                            <td>22/2/2020</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                            <td>
-                                <a href={{asset('admin/comment/product')}}/{{$id}}/remove/2 class="btn-danger btn btn-remove">Xóa</a>    
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            {{$comments->links()}}
         </div>
         <a href={{asset('admin/products')}} class="btn btn-warning">Quay lại</a>
     </div>

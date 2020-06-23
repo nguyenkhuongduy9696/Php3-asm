@@ -42,7 +42,7 @@ class ProductController extends Controller
             die;
         }
         $rules = [
-            'product_name' => 'required|between:5,30',
+            'product_name' => 'required|between:5,30|unique:product,product_name,'.$id,
             'product_price' => 'required|min:1|numeric',
             'product_sale_price' => 'required|min:1|numeric|lt:product_price',
             'product_detail' => 'required',
@@ -52,7 +52,7 @@ class ProductController extends Controller
         $msgE = [
             'product_name.required' => 'Tên sản phẩm không được để trống!',
             'product_name.between' => 'Tên sản phẩm từ 5 đến 30 ký tự!',
-            
+            'product_name.unique' => 'Tên sản phẩm đã tồn tại!',
             'product_price.required' => 'Giá sản phẩm không được để trống!',
             'product_price.min' => 'Giá sản phẩm lớn hơn 1!',
             'product_price.numeric' => 'Giá sản phẩm phải là số!',

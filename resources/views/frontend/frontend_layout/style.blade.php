@@ -11,6 +11,11 @@
             color: red;
             font-size: 12px;
         }
+        #comment-error{
+            margin-top: 5px;
+            color: red;
+            font-size: 12px;
+        }
     </style>
 <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>

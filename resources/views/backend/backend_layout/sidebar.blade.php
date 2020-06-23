@@ -4,8 +4,9 @@
                 
                 <li id="search">
                     <a href="javascript:;"><i class="fa fa-search opacity-control"></i></a>
-                     <form>
-                        <input type="text" class="search-query" placeholder="Tìm kiếm...">
+                     <form action={{asset('admin/search')}} method="post" id="search-form">
+                     @csrf
+                        <input type="text" class="search-query" name="txt_search" placeholder="Tìm kiếm...">
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
                 </li>

@@ -3,6 +3,7 @@ namespace App\Http\Controllers\frontend;
 
 use App\Model\Category;
 use App\Model\Product;
+use Illuminate\Support\Facades\Log;
 
 class HomepageController extends Controller{
     public function index(){
@@ -18,6 +19,26 @@ class HomepageController extends Controller{
         $sold_pros=Product::orderBy('sold_number','desc')->take(4)->get();
         $dataview['sold_pros']=$sold_pros;
         return view('frontend.homepage',$dataview);
+    }
+    public function log(){
+        $message = 'Test chuc nang log: ';
+
+
+        Log::emergency($message); 
+
+        Log::alert($message);
+
+        Log::critical($message);
+
+        Log::error($message);
+
+        Log::warning($message);
+
+        Log::notice($message);
+
+        Log::info($message);
+
+        Log::debug($message);
     }
     
 }

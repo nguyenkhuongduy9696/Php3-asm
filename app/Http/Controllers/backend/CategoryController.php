@@ -4,7 +4,10 @@ namespace App\Http\Controllers\backend;
 
 use App\Model\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+
 
 class CategoryController extends Controller
 {
@@ -39,6 +42,7 @@ class CategoryController extends Controller
     public function remove($id)
     {
         if (Category::destroy($id)) {
+            Log::notice('Quản trị viên '.Auth::user()->username.' đã xóa danh mục có id là '.$id);
             return redirect()->route('backend.list-category')->with(['msg'=>'Xóa danh mục thành công!']);
         }
         return redirect()->route('backend.list-category')->with(['msg'=>'Xóa danh mục không thành công!']);
@@ -52,10 +56,11 @@ class CategoryController extends Controller
     {
         $dataview = [];
         $rules = [
-            'cate_name' => 'required'
+            'cate_name' => 'required|unique:category,cate_name,'.$request->id,
         ];
         $msgE = [
-            'cate_name.required' => 'Tên danh mục không được để trống!'
+            'cate_name.required' => 'Tên danh mục không được để trống!',
+            'cate_name.unique' => 'Tên danh mục đã tồn tại!'
         ];
         $validator = Validator::make($request->all(), $rules, $msgE);
         if ($validator->fails()) {
