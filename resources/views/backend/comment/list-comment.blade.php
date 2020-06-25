@@ -11,7 +11,7 @@
                     </div>
                 @endif
             <div class="panel-heading">
-                <h4>Danh sách bình luận </h4>
+                <h4>Danh sách bình luận của sản phẩm {{$pro_name}} </h4>
                 <div class="options">
                 </div>
             </div>
@@ -27,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($comments as $comment)
+                        @forelse($comments as $comment)
                         <tr>
                             <td>{{$comment->id}}</td>
                             <td>
@@ -44,7 +44,9 @@
                                 <a href={{asset('admin/comment/product')}}/{{$pro_id}}/remove/{{$comment->id}} class="btn-danger btn btn-remove">Xóa</a>    
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <p class="text-success">Chưa có bình luận nào cho sản phẩm này.</p>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

@@ -104,12 +104,12 @@
 	<div class="col-sm-12">
 		<ul class="nav nav-tabs">
 			@foreach($cates as $cate)
-			@if($cate_count==0)
+			@if($cate_count==0 && $cate->id!=29)
 			<li class="active"><a href="#cate{{$cate->id}}" data-toggle="tab">{{$cate->cate_name}}</a></li>
 			@php 
 			$cate_count++
 			@endphp
-			@else 
+			@elseif($cate_count!=0 && $cate->id!=29) 
 			<li><a href="#cate{{$cate->id}}" data-toggle="tab">{{$cate->cate_name}}</a></li>
 			@endif
 			@endforeach

@@ -30,8 +30,12 @@
                             <td>{{$cate->id}}</td>
                             <td>{{$cate->cate_name}}</td>
                             <td>
+                                @if($cate->id!=29)
                                 <a href={{asset('admin/category/edit')}}/{{$cate->id}} class="btn-primary btn">Sửa</a>
                                 <a href={{asset('admin/category/remove')}}/{{$cate->id}} class="btn-danger btn btn-remove">Xóa</a>
+                                @else
+                                <p class="text-warning">Danh mục mặc định không thể sửa hay xóa</p>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

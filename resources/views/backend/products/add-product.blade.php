@@ -131,7 +131,7 @@
                 },
                 product_quantity:{
                     required:true,
-                    min:1
+                    min:0
                 },
                 product_detail:{
                     required:true
@@ -157,7 +157,7 @@
                 },
                 product_quantity:{
                     required:"Số lượng sản phẩm không được để trống!",
-                    min:"Số lượng sản phẩm thấp nhất bằng 1!"
+                    min:"Số lượng sản phẩm thấp nhất bằng 0!"
                 },
                 product_detail:{
                     required:"Mô tả sản phẩm không được để trống!"

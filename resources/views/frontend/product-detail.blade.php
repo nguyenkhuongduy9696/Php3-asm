@@ -1,6 +1,11 @@
 @extends('frontend.frontend_layout.layout')
 @section('title')
+@isset($pro)
 {{$pro->product_name}}
+@endisset
+@empty($pro)
+Không tìm thấy thông tin sản phẩm
+@endempty
 @endsection
 @section('slider')
 <br>
@@ -23,6 +28,7 @@
     	    </div>
         @endif
     <!--product-details-->
+    
     <div class="col-sm-5">
         <div class="view-product">
             <img src={{asset('uploads')}}/{{$pro->product_image}} alt="" />
@@ -125,7 +131,8 @@
                                 <a href={{asset('products')}}/{{$relate->id}}>
                                     <p>{{$relate->product_name}}</p>
                                 </a>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+                                <a href={{asset('addCart')}}/{{$relate->id}} class="btn btn-default cart">
+                                <i class="fa fa-shopping-cart"></i>Thêm vào giỏ </a>
                             </div>
                         </div>
                     </div>

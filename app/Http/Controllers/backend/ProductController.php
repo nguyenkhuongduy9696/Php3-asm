@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\backend;
 
 use App\Model\Category;
+use App\Model\Comment;
 use App\Model\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -14,22 +17,23 @@ class ProductController extends Controller
         $product = Product::orderBy('created_at', 'desc')->paginate(4);
         return view('backend.products.list-product', ['product' => $product]);
     }
-    public function detail($id)
+    public function detail(Product $product)
     {
-        $product = Product::find($id);
+        $product = Product::find($product->id);
         return view('backend.products.product-detail', ['pro' => $product]);
     }
-    public function remove($id)
+    public function remove(Product $product)
     {
-        if (Product::destroy($id)) {
+            Comment::where('product_id',$product->id)->delete();
+            Product::destroy($product->id);
+            Log::notice('Quản trị viên '.Auth::user()->username.' đã xóa sản phẩm có id là '.$product->id);
             return redirect()->route('backend.list-product')->with(['msg' => 'Xóa sản phẩm thành công!']);
-        }
-        return redirect()->route('backend.list-product')->with(['msg' => 'Xóa sản phẩm không thành công!']);
+        
     }
-    public function edit($id)
+    public function edit(Product $product)
     {
         $cates = Category::all();
-        $product = Product::find($id);
+        $product = Product::find($product->id);
         return view('backend.products.edit-product', ['pro' => $product, 'cates' => $cates]);
     }
     public function saveEdit(Request $request)
@@ -46,7 +50,7 @@ class ProductController extends Controller
             'product_price' => 'required|min:1|numeric',
             'product_sale_price' => 'required|min:1|numeric|lt:product_price',
             'product_detail' => 'required',
-            'product_quantity' => 'required|min:1|numeric',
+            'product_quantity' => 'required|min:0|numeric',
            
         ];
         $msgE = [
@@ -62,7 +66,7 @@ class ProductController extends Controller
             'product_sale_price.lt' => 'Giá khuyến mãi phải nhỏ hơn giá gốc!',
             'product_detail.required' => 'Thông tin sản phẩm không được để trống!',
             'product_quantity.required' => 'Số lượng sản phẩm không được để trống!',
-            'product_quantity.min' => 'Số lượng sản phẩm lớn hơn 1!',
+            'product_quantity.min' => 'Số lượng sản phẩm lớn hơn 0!',
             'product_quantity.numeric' => 'Số lượng sản phẩm phải là số!',
         ];
         $validator = Validator::make($request->all(), $rules, $msgE);
@@ -99,7 +103,7 @@ class ProductController extends Controller
             'product_price' => 'required|min:1|numeric',
             'product_sale_price' => 'required|min:1|numeric|lt:product_price',
             'product_detail' => 'required',
-            'product_quantity' => 'required|min:1|numeric',
+            'product_quantity' => 'required|min:0|numeric',
             'product_image' => 'required|image',
         ];
         $msgE = [
@@ -115,7 +119,7 @@ class ProductController extends Controller
             'product_sale_price.lt' => 'Giá khuyến mãi phải nhỏ hơn giá gốc!',
             'product_detail.required' => 'Thông tin sản phẩm không được để trống!',
             'product_quantity.required' => 'Số lượng sản phẩm không được để trống!',
-            'product_quantity.min' => 'Số lượng sản phẩm lớn hơn 1!',
+            'product_quantity.min' => 'Số lượng sản phẩm lớn hơn 0!',
             'product_quantity.numeric' => 'Số lượng sản phẩm phải là số!',
             'product_image.required' => 'Ảnh sản phẩm không được để trống!',
             'product_image.image' => 'Mời chọn đúng file ảnh!',

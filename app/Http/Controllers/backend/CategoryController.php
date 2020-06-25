@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Model\Category;
+use App\Model\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -39,17 +40,17 @@ class CategoryController extends Controller
             return redirect()->route('backend.list-category')->with(['msg'=>'Thêm danh mục thành công!']);
         }
     }
-    public function remove($id)
+    public function remove(Category $category)
     {
-        if (Category::destroy($id)) {
-            Log::notice('Quản trị viên '.Auth::user()->username.' đã xóa danh mục có id là '.$id);
+            Product::where('cate_id',$category->id)->update(['cate_id'=>29]);
+            Category::destroy($category->id);
+            Log::notice('Quản trị viên '.Auth::user()->username.' đã xóa danh mục có id là '.$category->id);
             return redirect()->route('backend.list-category')->with(['msg'=>'Xóa danh mục thành công!']);
-        }
-        return redirect()->route('backend.list-category')->with(['msg'=>'Xóa danh mục không thành công!']);
+       
     }
-    public function edit($id)
+    public function edit(Category $category)
     {
-        $obj = Category::find($id);
+        $obj = Category::find($category->id);
         return view('backend.category.edit-category', ['obj' => $obj]);
     }
     public function saveEdit(Request $request)

@@ -40,7 +40,11 @@ Liên hệ
         @error('email')
         <small class="text-danger">{{ $message }}</small>
         @enderror
-        <button type="submit" class="btn btn-default check_out">Gửi</button>
+        <textarea name="contact" id="contact" class="form-control" placeholder="Nội dung liên hệ" cols="30" rows="10">{{old('contact')}}</textarea>
+        @error('contact')
+        <small class="text-danger">{{ $message }}</small>
+        @enderror
+        <br><button type="submit" class="btn btn-default check_out">Gửi</button>
     </form>
 </div>
 @endsection
@@ -63,6 +67,9 @@ Liên hệ
                 email: {
                     required: true,
                     email: true
+                },
+                contact: {
+                    required: true
                 }
             },
             messages: {
@@ -76,6 +83,9 @@ Liên hệ
                 email: {
                     required: "Email không được để trống!",
                     email: "Email phải đúng dạng!"
+                },
+                contact: {
+                    required: "Mời bạn nhập nội dung liên hệ!"
                 }
 
             }

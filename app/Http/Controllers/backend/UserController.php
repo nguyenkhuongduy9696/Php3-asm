@@ -1,9 +1,12 @@
 <?php
 namespace App\Http\Controllers\backend;
 
+use App\Model\Comment;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller{
@@ -11,20 +14,22 @@ class UserController extends Controller{
         $users = User::orderBy('created_at','desc')->paginate(3);
         return view('backend.user.list-user',['users'=>$users]);
     }
-    public function detail($id){
-        $user=User::find($id);
+    public function detail(User $user){
+        $user=User::find($user->id);
         return view('backend.user.user-detail',['user'=>$user]);
     }
-    public function edit($id){
-        return view('backend.user.edit-user',['id'=>$id]);
+    public function edit(User $user){
+        return view('backend.user.edit-user',['id'=>$user->id]);
     }
     public function saveEdit(){
         header("location: " . asset('admin/user?msg=Cập nhật thành viên thành công!'));
         die;
     }
-    public function remove($id){
-        header("location: " . asset('admin/user?msg=Xóa thành viên thành công!'));
-        die;
+    public function remove(User $user){
+        Comment::where('user_id',$user->id)->delete();
+        User::destroy($user->id);
+        Log::notice('Quản trị viên '.Auth::user()->username.' đã xóa thành viên có id là '.$user->id);
+        return redirect()->route('backend.list-user')->with(['msg'=>'Xóa thành viên thành công!']);
     }
     public function signup(){
         return view('backend.user.signup');

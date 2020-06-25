@@ -5,6 +5,11 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="panel panel-primary">
+        @if(Session::get('msg'))
+                    <div class="alert alert-success">
+                        {{ session('msg') }}
+                    </div>
+                @endif
             <div class="panel-heading">
                 <h4>Danh sách thành viên</h4>
                 <div class="options">

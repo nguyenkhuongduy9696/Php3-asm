@@ -1,6 +1,11 @@
 @extends('frontend.frontend_layout.layout')
 @section('title')
+@isset($cate)
 Danh mục {{$cate->cate_name}}
+@endisset
+@empty($cate)
+Không tìm thấy thông tin danh mục
+@endempty
 @endsection
 @section('slider')
 <br>
@@ -19,7 +24,7 @@ Danh mục {{$cate->cate_name}}
 <div class="features_items">
 	<!--features_items-->
 	<h2 class="title text-center">Các sản phẩm {{$cate->cate_name}} </h2>
-	@foreach($products as $pro)
+	@forelse($products as $pro)
 	<div class="col-sm-3">
 		<div class="product-image-wrapper">
 			<div class="single-products">
@@ -39,7 +44,9 @@ Danh mục {{$cate->cate_name}}
 			</div>
 		</div>
 	</div>
-	@endforeach
+	{{$products->links()}}
+	@empty
+	<p class="text-success">Danh mục này vẫn chưa có sản phẩm.</p>
+	@endforelse
 </div>
-{{$products->links()}}
 @endsection
