@@ -12,12 +12,12 @@
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            
+
                             <li><a href={{asset('cart')}}><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
                             <!-- <li><a href="#"><i class="fa fa-lock"></i> Đăng nhập</a></li> -->
                             @if(Auth::check())
                             <li><a href={{asset('checkout')}}><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
-                            <li><a href={{asset('user')}}/{{Auth::user()->id}}><i class="fa fa-user"></i>{{Auth::user()->username}}</a></li>
+                            <li><a href={{asset('user')}}/ {{Auth::user()->id}}><i class="fa fa-user"></i>{{Auth::user()->username}}</a></li>
                             <li><a href={{route('Auth.logout')}}>Đăng xuất</a></li>
                             @else
                             <li><a href={{route('Auth.login')}}><i class="fa fa-user"></i>Đăng nhập</a></li>
@@ -54,8 +54,14 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="search_box pull-right">
-                        <input type="text" placeholder="Tìm kiếm..." />
-                        <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <form action={{asset('search')}} method="post">
+                            @csrf
+                            <input type="text" name="search" placeholder="Tìm kiếm..." />
+                            <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            @error('search')
+                            <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </form>
                     </div>
                 </div>
             </div>

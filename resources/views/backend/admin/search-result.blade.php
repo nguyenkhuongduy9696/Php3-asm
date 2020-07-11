@@ -4,7 +4,6 @@
 @section('content')
 <div class="row">
     <div class="col-xs-12">
-        @isset($product)
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Danh sách sản phẩm có chứa từ khóa "{{$search}}"</h4>
@@ -25,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($product as $pro)
+                        @forelse($products as $pro)
                         <tr>
                             <td>{{$pro->id}}</td>
                             <td>{{$pro->product_name}}</td>
@@ -47,15 +46,18 @@
                                 <a href={{asset('admin/comment/product')}}/{{$pro->id}} class="btn-warning btn">Bình luận</a>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <div class="alert alert-success">
+                            Không tìm thấy sản phẩm nào mà bạn muốn tìm!
+                        </div>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
+            <div class="row">
+	            {{$products->links()}}
+            </div>
         </div>
-        @endisset
-        @empty($product)
-        <p>Chưa nhập từ khóa để tìm kiếm</p>
-        @endempty
     </div>
 </div>
 @endsection

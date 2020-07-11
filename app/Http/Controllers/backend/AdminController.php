@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\backend;
 
 use App\Model\Order;
@@ -6,27 +7,42 @@ use App\Model\Product;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
-class AdminController extends Controller{
-    public function index(){
-        $dataview=[];
-        $dataview['pro']=Product::all()->count();
-        $dataview['user']=User::all()->count();
-        $dataview['order']=Order::all()->count();
-        return view('backend.admin.index',$dataview);
+class AdminController extends Controller
+{
+    public function index()
+    {
+        $dataview = [];
+        $dataview['pro'] = Product::all()->count();
+        $dataview['user'] = User::all()->count();
+        $dataview['order'] = Order::all()->count();
+        return view('backend.admin.index', $dataview);
     }
-    public function search(Request $request){
-        if($request->isMethod('post')){
-            $search=$request->txt_search;
-            $dataview=[];
-            $dataview['search']=$search;
-            $dataview['product']=Product::where('product_name','like','%'.$search.'%')->orderBy('created_at','desc')->get();
-            Log::notice('Tìm kiếm từ khóa '.$search);
-            return view('backend.admin.search-result',$dataview);
+    public function search(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $rules = [
+                'txt_search' => 'required'
+            ];
+            $msg = [
+                'txt_search.required' => 'Nội dung tìm kiếm không được để trống!'
+            ];
+            $validator = Validator::make($request->all(), $rules, $msg);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            } else {
+                $search = $request->txt_search;
+                return redirect('admin/search/' . $search);
+            }
         } else{
-            $dataview=[];
-            return view('backend.admin.search-result',$dataview);
+            return redirect()->route('backend.admin');
         }
     }
-    
+    public function searchResult($name){
+        $dataview=[];
+        $dataview['search']=$name;
+        $dataview['products'] = Product::where('product_name', 'like', '%' . $name . '%')->orderBy('created_at', 'desc')->paginate(4);
+        return view('backend.admin.search-result',$dataview);
+    }
 }

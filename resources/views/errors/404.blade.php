@@ -13,10 +13,14 @@
 
 <body>
     <div class="wrapper">
-        <div class="col-2"></div>
-        <div class="col-8 text-center">
-            <h2>Trang bạn tìm không tồn tại</h2>
-            <img src={{asset('uploads/86418032b715698a4dfa6684b50c12af.gif')}} width="500px" alt="Lỗi">
+        <div class="row" style="margin-top:50px;">
+            <div class="col-2"></div>
+            <div class="col-8 text-center">
+                <img src={{asset('uploads/86418032b715698a4dfa6684b50c12af.gif')}} width="500px" alt="Lỗi">
+                <h2 class="text-danger">Ooops!</h2>
+                <h4>Chúng tôi không thể tìm thấy trang bạn yêu cầu!</h4>
+                <p>Thử quay về <a href={{asset('/')}}>Trang chủ</a> để xem có thứ bạn muốn tìm kiếm không? </p>
+            </div>
         </div>
     </div>
     <img src="" alt="">

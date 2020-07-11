@@ -16,7 +16,7 @@ Liên hệ
 <br>
 @endsection
 @section('content')
-<h3 class="text-center">Liên hệ</h3>
+<h3 class="text-center text-primary">Liên hệ với chúng tôi</h3><br>
 @if(Session::get('msg'))
 <div class="alert alert-success">
     {{ session('msg') }}

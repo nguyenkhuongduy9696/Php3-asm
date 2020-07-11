@@ -40,6 +40,7 @@ class CheckoutController extends Controller{
         $validator = Validator::make($request->all(), $rules, $msgE);
         if($validator->fails()){
             return redirect('checkout')->withErrors($validator)->withInput();
+            
         } else{
             $order=new Order();
             $order->user_id=$request->user_id;

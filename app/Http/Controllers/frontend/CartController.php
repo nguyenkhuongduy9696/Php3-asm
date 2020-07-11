@@ -43,6 +43,7 @@ class CartController extends Controller
             }
         }
     }
+    
     public function upCart($id)
     {
         if (session()->has('cart')) {

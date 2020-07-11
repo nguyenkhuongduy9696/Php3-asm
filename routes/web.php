@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //-----------Route phần frontend----------------------
-Route::get('log','frontend\HomepageController@log');
+Route::get('log', 'frontend\HomepageController@log');
 Route::get('/', 'frontend\HomepageController@index')->name('frontend.homepage');
 Route::get('shop', 'frontend\ShopController@index');
 Route::get('cart', 'frontend\CartController@index');
 Route::get('category/{category}', 'frontend\CategoryController@index');
 Route::get('products/{product}', 'frontend\ProductController@index');
-Route::match(['get','post'],'contact','frontend\ContactController@index')->name('frontend.contact');
+Route::match(['get', 'post'], 'contact', 'frontend\ContactController@index')->name('frontend.contact');
 //-----------Route phần Cart----------------------
 Route::get('addCart/{product}', 'frontend\ProductController@addCart');
 Route::get('cart/down/{id}', 'frontend\CartController@downCart')->where(['id' => '[0-9]{1,6}']);
@@ -34,8 +34,8 @@ Route::post('saveUser', 'backend\UserController@saveUser');
 //-----------Nhóm Route Auth
 Route::middleware(['auth'])->group(function () {
     Route::get('checkout', 'frontend\CheckoutController@index');
-    Route::post('order','frontend\CheckoutController@order');
-    Route::post('saveComment','frontend\ProductController@saveComment');
+    Route::post('order', 'frontend\CheckoutController@order');
+    Route::post('saveComment', 'frontend\ProductController@saveComment');
 });
 //------------Phân quyền động bằng database
 Route::get('admin', 'backend\AdminController@index')->name('backend.admin')->middleware('can:backend.admin');
@@ -68,4 +68,8 @@ Route::get('admin/order/done/{order}', 'backend\OrderController@done')->name('ba
 Route::get('admin/comment/product/{product}', 'backend\CommentController@index')->name('backend.list-comment')->middleware('can:backend.list-comment');
 Route::get('admin/comment/product/{product}/remove/{comment}', 'backend\CommentController@remove')->name('backend.remove-comment')->middleware('can:backend.remove-comment');
 //Route cho phần Search backend
-Route::match(['get','post'],'admin/search','backend\AdminController@search')->name('backend.search')->middleware('can:backend.search');
+Route::match(['get', 'post'], 'admin/search', 'backend\AdminController@search')->name('backend.search')->middleware('can:backend.search');
+Route::match(['get','post'],'admin/search/{name}','backend\AdminController@searchResult')->name('backend.searchResult')->middleware('can:backend.searchResult');
+//Route cho phần Search frontend
+Route::match(['get', 'post'], 'search', 'frontend\HomepageController@search')->name('frontend.search');
+Route::match(['get', 'post'], 'search/{name}', 'frontend\HomepageController@searchResult')->name('frontend.searchResult');
